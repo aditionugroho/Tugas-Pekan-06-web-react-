@@ -6,6 +6,7 @@ import LessonDetail from "./components/LessonDetail.jsx";
 import LessonGrid from "./components/LessonGrid.jsx";
 import TopicTabs from "./components/TopicTabs.jsx";
 import WelcomeSection from "./components/WelcomeSection.jsx";
+import LessonManager from "./components/LessonManager.jsx";
 import { topics } from "./data/lessons.js";
 
 export default function App() {
@@ -29,12 +30,26 @@ export default function App() {
       return;
     }
 
+  function speak(text) {
+    if (!soundEnabled) return;
+    if (!("speechSynthesis" in window)) {
+      setSpeechError("Maaf, fitur suara tidak didukung oleh browser ini.");
+      return;
+    }
+
     setSpeechError("");
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "id-ID";
-    utterance.rate = 0.85;
+    utterance.rate = 0.8;
+    utterance.pitch = 1.05;
+    const voices = window.speechSynthesis.getVoices();
+    const indonesianVoice = voices.find((voice) => voice.lang === "id-ID" || voice.lang.startsWith("id"));
+    if (indonesianVoice) utterance.voice = indonesianVoice;
+    utterance.onend = () => {};
+    utterance.onerror = () => setSpeechError("Maaf, suara tidak dapat diputar.");
     window.speechSynthesis.speak(utterance);
+  }
   }
 
   function toggleSound() {
@@ -85,6 +100,7 @@ export default function App() {
           activeIndex={lessonIndex}
           onSelectLesson={setLessonIndex}
         />
+        <LessonManager />
       </main>
       <Footer />
     </div>

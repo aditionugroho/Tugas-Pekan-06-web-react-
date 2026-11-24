@@ -1,0 +1,46 @@
+@baseUrl = http://localhost:3000
+
+### GET semua pelajaran
+GET {{baseUrl}}/lessons
+
+### GET satu pelajaran
+GET {{baseUrl}}/lessons/1
+
+### POST tambah pelajaran
+POST {{baseUrl}}/lessons
+Content-Type: application/json
+
+{
+  "title": "Mengenal Angka 1",
+  "topic": "Angka",
+  "level": "Pemula",
+  "duration": 15,
+  "completed": false
+}
+
+### PATCH ubah pelajaran
+PATCH {{baseUrl}}/lessons/1
+Content-Type: application/json
+
+{
+  "completed": true,
+  "duration": 20
+}
+
+### DELETE hapus pelajaran
+DELETE {{baseUrl}}/lessons/1
+
+### Contoh NotFoundException
+GET {{baseUrl}}/lessons/999
+
+### Contoh ConflictException
+POST {{baseUrl}}/lessons
+Content-Type: application/json
+
+{
+  "title": "Mengenal Huruf A",
+  "topic": "Huruf",
+  "level": "Pemula",
+  "duration": 10,
+  "completed": false
+}
